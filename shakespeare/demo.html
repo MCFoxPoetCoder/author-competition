@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f4e8d1;
+        background-image: url('https://www.transparenttextures.com/patterns/old-wall.png');
+        color: #333;
+        margin: 50px;
+      }
+      h1, h2, h3, caption {
+        font-family: 'Cinzel', serif;
+        color: #3e2723;
+      }
+      .container {
+        background-color: #fffdf8;
+        padding: 30px;
+        border-radius: 10px;
+        border: 2px solid #8d6e63;
+        box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
+        max-width: 700px;
+        margin: auto;
+      }
+      button {
+        background-color: #8d6e63;
+        color: white;
+        padding: 15px 32px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-family: 'Cinzel', serif;
+      }
+      button:hover { background-color: #5d4037; }
+
+      input[type="text"] {
+        width: 80%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      textarea {
+        background-color: #fcf8f2;
+        border: 1px solid #ccc;
+      }
+
+      /* FOUR HUMORS TEAM COLORS */
+      #table-t1-name { background-color: #D18080; color: black; padding: 5px; }
+      #table-t2-name { background-color: #FFE791; color: black; padding: 5px; }
+      #table-t3-name { background-color: #7EA9D6; color: black; padding: 5px; }
+      #table-t4-name { background-color: #B8B8B8; color: black; padding: 5px; }
+
+      /* Game Over winner banner */
+      .winner-banner {
+        background: linear-gradient(135deg, #8d6e63, #5d4037);
+        color: white;
+        padding: 25px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+      .winner-banner h3 {
+        color: #FFE791;
+        font-size: 1.4em;
+        margin: 0 0 8px 0;
+        font-family: 'Cinzel', serif;
+      }
+      .winner-name {
+        font-size: 1.9em;
+        font-family: 'Cinzel', serif;
+        color: #FFE791;
+        margin: 8px 0 0 0;
+      }
+      .crown { font-size: 2.5em; }
+
+      /* STEALING RULES MODAL */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.55);
+        z-index: 1000;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 40px;
+        box-sizing: border-box;
+      }
+      .modal-overlay.open { display: flex; }
+      .modal-box {
+        background: #fffdf8;
+        border: 2px solid #8d6e63;
+        border-radius: 10px;
+        padding: 30px 35px;
+        max-width: 620px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        text-align: left;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        position: relative;
+      }
+      .modal-box h2 {
+        margin-top: 0;
+        font-size: 1.3em;
+      }
+      .modal-close {
+        position: absolute;
+        top: 12px; right: 16px;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+        color: #5d4037;
+        padding: 0;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        line-height: 1;
+      }
+      .modal-close:hover { color: #d32f2f; background: none; }
+      .example-block {
+        background: #f4e8d1;
+        border-left: 4px solid #8d6e63;
+        padding: 10px 14px;
+        border-radius: 4px;
+        margin: 10px 0;
+        font-size: 0.95em;
+      }
+      .example-block.invalid { border-left-color: #d32f2f; background: #fdecea; }
+      .example-label {
+        font-weight: bold;
+        font-family: 'Cinzel', serif;
+        font-size: 0.85em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+      .valid-label   { color: #2e7d32; }
+      .invalid-label { color: #d32f2f; }
+
+      /* FLOATING RULES BUTTON */
+      #rules-float-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 999;
+        background-color: #5d4037;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-family: 'Cinzel', serif;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        margin: 0;
+      }
+      #rules-float-btn:hover { background-color: #3e2723; }
+      /* TOP NAV BAR — demo banner */
+      .top-nav {
+        max-width: 700px;
+        margin: 0 auto 14px auto;
+        text-align: center;
+      }
+      .demo-banner {
+        display: inline-block;
+        background-color: #e65100;
+        color: white;
+        font-family: 'Cinzel', serif;
+        font-size: 13px;
+        padding: 7px 20px;
+        border-radius: 5px;
+        letter-spacing: 0.04em;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- DEMO BANNER -->
+    <div class="top-nav">
+      <span class="demo-banner">&#x1F513; FREE DEMO &mdash; Round 1 Only</span>
+    </div>
+
+    <!-- INSTRUCTIONS PAGE -->
+    <div id="instructions-page" class="container">
+      <h1>William Shakespeare Competition</h1>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Shakespeare.jpg"
+           alt="William Shakespeare"
+           style="width: 150px; border-radius: 50%; border: 3px solid #8d6e63; margin-top: 10px;">
+      <p>An introduction to his life, times, and works through a game.</p>
+
+      <hr>
+
+      <h2>Game Rules</h2>
+      <p style="text-align: left;"><strong>Overview: </strong>In three rounds, you will gather facts about William Shakespeare.</p>
+      <ul style="text-align: left;">
+        <li>Round 1: The Times of Shakespeare</li>
+        <li>Round 2: The Life of Shakespeare</li>
+        <li>Round 3: The Works of Shakespeare</li>
+      </ul>
+      <p style="text-align: left;">Each round has two <strong>phases</strong>:</p>
+      <ul style="text-align: left;">
+        <li><strong>Phase 1:</strong> You have 5 minutes to use computers to gather facts for the round's topic.</li>
+        <li><strong>Phase 2:</strong> Take turns sharing one fact. Cross off facts given by other teams.
+          <ul>
+            <li>You earn <strong>1 point</strong> per unique fact given!</li>
+            <li>A valid <strong>fact</strong> must be <em>true and specific</em> — vague statements like
+              <em>"Shakespeare was famous"</em> do not count. A fact like
+              <em>"Shakespeare was born in Stratford-upon-Avon in 1564"</em> does.</li>
+            <li><strong>Stealing:</strong> A team may steal a point by providing a specific detail
+              the sharing team left out — but <em>only</em> if they had both the original fact
+              <em>and</em> the additional detail already written on their paper.
+              <a href="#" onclick="openModal(); return false;"
+                 style="color:#5d4037; font-weight:bold; white-space:nowrap;">
+                See detailed rules &amp; examples &#x1F4DC;
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <button onclick="goToTeamInput()">Start Game &amp; Enter Teams</button>
+    </div>
+
+    <!-- TEAM INPUT PAGE -->
+    <div id="team-page" class="container" style="display: none;">
+      <h2>Enter Team Names</h2>
+      <p>Please enter the names of the 4 teams competing today:</p>
+
+      <input type="text" id="team1" placeholder="Team 1 Name"><br>
+      <input type="text" id="team2" placeholder="Team 2 Name"><br>
+      <input type="text" id="team3" placeholder="Team 3 Name"><br>
+      <input type="text" id="team4" placeholder="Team 4 Name"><br>
+
+      <button onclick="submitTeams()">Save Teams &amp; Go To Round 1</button>
+    </div>
+
+    <!-- ROUND PAGE -->
+    <div id="round-page" class="container" style="display: none;">
+      <h2 id="round-title">Round X: Title</h2>
+      <p id="round-subtitle">Subtitle instructions here</p>
+
+      <hr>
+      <h3>Phase 1: Fact Gathering</h3>
+      <h1 id="timer-display" style="font-size: 48px; color: #d32f2f;">05:00</h1>
+      <button id="timer-btn" onclick="startTimer(300, 'timer-display')">Start 5-Minute Timer</button>
+
+      <hr>
+      <h3>Phase 2: Sharing Facts</h3>
+      <p>Take turns sharing facts. 1 point per unique fact!</p>
+
+      <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <caption><strong>Facts Gathered</strong></caption>
+        <thead>
+          <tr>
+            <th id="table-t1-name">Team 1</th>
+            <th id="table-t2-name">Team 2</th>
+            <th id="table-t3-name">Team 3</th>
+            <th id="table-t4-name">Team 4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><textarea rows="6" style="width: 90%;"></textarea></td>
+            <td><textarea rows="6" style="width: 90%;"></textarea></td>
+            <td><textarea rows="6" style="width: 90%;"></textarea></td>
+            <td><textarea rows="6" style="width: 90%;"></textarea></td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+
+      <div style="text-align: left; font-size: 18px; line-height: 2;">
+        <strong>Team 1 (<span id="round-t1-name">TBD</span>):</strong>
+        <input type="number" id="round-t1-score" value="0" style="width: 50px;"> pts<br>
+        <strong>Team 2 (<span id="round-t2-name">TBD</span>):</strong>
+        <input type="number" id="round-t2-score" value="0" style="width: 50px;"> pts<br>
+        <strong>Team 3 (<span id="round-t3-name">TBD</span>):</strong>
+        <input type="number" id="round-t3-score" value="0" style="width: 50px;"> pts<br>
+        <strong>Team 4 (<span id="round-t4-name">TBD</span>):</strong>
+        <input type="number" id="round-t4-score" value="0" style="width: 50px;"> pts<br>
+      </div>
+
+      <button id="save-round-btn" onclick="saveRoundScores()">Save Round Scores</button>
+    </div>
+
+    <!-- SCOREBOARD PAGE -->
+    <div id="scoreboard-page" class="container" style="display: none;">
+      <h2>Scoreboard</h2>
+      <div id="scoreboard-table-container"></div>
+      <button id="next-round-btn" onclick="prepareNextRound()">Start Next Round</button>
+    </div>
+
+    <!-- GAME OVER PAGE -->
+    <div id="gameover-page" class="container" style="display: none;">
+      <h2>Final Scoreboard</h2>
+      <div id="final-scoreboard-container"></div>
+      <div class="winner-banner">
+        <div class="crown">&#x1F451;</div>
+        <h3>Winner!</h3>
+        <div id="winner-name" class="winner-name"></div>
+      </div>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+
+    <!-- FLOATING STEALING RULES BUTTON (always visible) -->
+    <button id="rules-float-btn" onclick="openModal()">&#x1F4DC; Stealing Rules</button>
+
+    <!-- STEALING RULES MODAL -->
+    <div id="steal-modal" class="modal-overlay" onclick="handleOverlayClick(event)">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()" title="Close">&times;</button>
+        <h2>&#x2696;&#xFE0F; Stealing Rules</h2>
+
+        <p><strong>When can a team steal?</strong><br>
+        A team may attempt to steal a point when the sharing team states a fact but omits
+        an important specific detail. To make a valid steal, the challenging team must meet
+        <em>both</em> of the following conditions:</p>
+        <ol>
+          <li>They must have the <strong>original fact</strong> written on their paper.</li>
+          <li>They must have the <strong>additional specific detail</strong> also written on
+              their paper — it cannot be something they thought of on the spot after hearing
+              the other team speak.</li>
+        </ol>
+        <p>If both conditions are met, the challenging team states their more complete version.
+        The <strong>teacher has final say</strong> on whether the added detail is specific and
+        significant enough to earn the steal. A steal that is awarded transfers the point
+        entirely — the original team does <em>not</em> keep it.</p>
+
+        <hr style="border-color:#8d6e63; margin: 16px 0;">
+        <h3 style="margin-bottom:8px;">Examples</h3>
+
+        <div class="example-block">
+          <div class="example-label valid-label">&#10003; Valid Steal</div>
+          <p style="margin:4px 0;">
+            <strong>Team A says:</strong> "Shakespeare was born in 1564."<br>
+            <strong>Team B challenges:</strong> "We have written: Shakespeare was born on
+            April 23, 1564, in Stratford-upon-Avon, England."<br>
+            <strong>Result:</strong> Team B had both the birth-year fact <em>and</em> the
+            specific date and location already on their paper. The steal is valid — the point
+            goes to Team B.
+          </p>
+        </div>
+
+        <div class="example-block invalid">
+          <div class="example-label invalid-label">&#10007; Invalid Steal — Detail Not Written Down</div>
+          <p style="margin:4px 0;">
+            <strong>Team A says:</strong> "Shakespeare was born in Stratford-upon-Avon in 1564."<br>
+            <strong>Team B challenges:</strong> "We know the exact date was April 23rd!"<br>
+            <strong>Result:</strong> Team B can only show "1564" on their paper — the specific
+            date "April 23" was not written down before Team A spoke. The steal is
+            <em>not</em> valid. The point stays with Team A.
+          </p>
+        </div>
+
+        <div class="example-block invalid">
+          <div class="example-label invalid-label">&#10007; Invalid Steal — Detail Not Specific Enough</div>
+          <p style="margin:4px 0;">
+            <strong>Team A says:</strong> "Shakespeare wrote comedies, tragedies, and histories."<br>
+            <strong>Team B challenges:</strong> "He also wrote sonnets!"<br>
+            <strong>Result:</strong> Sonnets are a genuinely new fact, not a missing detail
+            of Team A's statement. Team B should save that for their own turn. No steal.
+          </p>
+        </div>
+
+        <p style="margin-top:14px; font-size:0.9em; color:#5d4037;">
+          <em>Remember: the teacher always has final say. When in doubt, be generous to the
+          defending team.</em>
+        </p>
+
+        <div style="text-align:center;">
+          <button onclick="closeModal()" style="margin-top:10px; padding:10px 28px; font-size:15px;">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // MODAL FUNCTIONS
+      function openModal() {
+        document.getElementById('steal-modal').classList.add('open');
+      }
+      function closeModal() {
+        document.getElementById('steal-modal').classList.remove('open');
+      }
+      // Close modal if user clicks the dark overlay (but not the box itself)
+      function handleOverlayClick(event) {
+        if (event.target === document.getElementById('steal-modal')) {
+          closeModal();
+        }
+      }
+
+      let timerInterval;
+      let currentRound = 1;
+      let currentGameData = [];
+
+      const roundDetails = {
+        1: { title: "Round 1: The Times of Shakespeare", subtitle: "(1564\u20131616) Contemporaries? Historical Events? What was it like?" },
+        2: { title: "Round 2: The Life of Shakespeare", subtitle: "When did he live? Where? Family? Job? Events?" },
+        3: { title: "Round 3: The Works of Shakespeare", subtitle: "How did he write (language/form)? What did he write?" }
+      };
+
+      function goToTeamInput() {
+        document.getElementById('instructions-page').style.display = 'none';
+        document.getElementById('team-page').style.display = 'block';
+      }
+
+      function submitTeams() {
+        let t1 = document.getElementById('team1').value || "Team 1";
+        let t2 = document.getElementById('team2').value || "Team 2";
+        let t3 = document.getElementById('team3').value || "Team 3";
+        let t4 = document.getElementById('team4').value || "Team 4";
+
+        currentGameData = [
+          [t1, 0, 0, 0, 0],
+          [t2, 0, 0, 0, 0],
+          [t3, 0, 0, 0, 0],
+          [t4, 0, 0, 0, 0]
+        ];
+
+        loadRound();
+      }
+
+      function loadRound() {
+        clearInterval(timerInterval);
+
+        document.getElementById('team-page').style.display = 'none';
+        document.getElementById('scoreboard-page').style.display = 'none';
+        document.getElementById('round-page').style.display = 'block';
+
+        document.getElementById('round-title').innerText = roundDetails[currentRound].title;
+        document.getElementById('round-subtitle').innerText = roundDetails[currentRound].subtitle;
+
+        for (let i = 0; i < 4; i++) {
+          let teamName = currentGameData[i][0];
+          document.getElementById('round-t' + (i + 1) + '-name').innerText = teamName;
+          document.getElementById('table-t' + (i + 1) + '-name').innerText = teamName;
+        }
+
+        // Reset timer display and colour
+        let timerDisplay = document.getElementById('timer-display');
+        timerDisplay.innerText = "05:00";
+        timerDisplay.style.color = '#d32f2f';
+
+        document.getElementById('timer-btn').disabled = false;
+        document.getElementById('save-round-btn').innerText = "Save Round " + currentRound + " Scores";
+        document.getElementById('save-round-btn').disabled = false;
+
+        document.querySelectorAll('textarea').forEach(ta => ta.value = "");
+        for (let i = 1; i <= 4; i++) {
+          document.getElementById('round-t' + i + '-score').value = 0;
+        }
+      }
+
+      function startTimer(durationInSeconds, displayElementId) {
+        clearInterval(timerInterval);
+        let timer = durationInSeconds;
+        let display = document.getElementById(displayElementId);
+        document.getElementById('timer-btn').disabled = true;
+
+        timerInterval = setInterval(function () {
+          let minutes = parseInt(timer / 60, 10);
+          let seconds = parseInt(timer % 60, 10);
+          minutes = minutes < 10 ? "0" + minutes : minutes;
+          seconds = seconds < 10 ? "0" + seconds : seconds;
+          display.innerText = minutes + ":" + seconds;
+
+          // Turn orange under 60 seconds as a visual warning
+          if (timer <= 60 && timer > 0) {
+            display.style.color = '#e65100';
+          }
+
+          if (--timer < 0) {
+            clearInterval(timerInterval);
+            display.innerText = "TIME'S UP!";
+            display.style.color = '#d32f2f';
+
+            let chime = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+            chime.play();
+
+            setTimeout(function () {
+              alert("Fact gathering time is over! Begin Phase 2.");
+            }, 500);
+          }
+        }, 1000);
+      }
+
+      function saveRoundScores() {
+        let scores = [
+          parseInt(document.getElementById('round-t1-score').value) || 0,
+          parseInt(document.getElementById('round-t2-score').value) || 0,
+          parseInt(document.getElementById('round-t3-score').value) || 0,
+          parseInt(document.getElementById('round-t4-score').value) || 0
+        ];
+
+        for (let i = 0; i < 4; i++) {
+          currentGameData[i][currentRound] = scores[i];
+          currentGameData[i][4] = currentGameData[i][1] + currentGameData[i][2] + currentGameData[i][3];
+        }
+
+        document.getElementById('round-page').style.display = 'none';
+        document.getElementById('scoreboard-page').style.display = 'block';
+
+        buildScoreboard(currentGameData, 'scoreboard-table-container');
+        updateScoreboardButton();
+      }
+
+      function buildScoreboard(data, containerId) {
+        let container = document.getElementById(containerId);
+        let maxScore = Math.max(...data.map(row => row[4]));
+
+        let html = '<table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:18px;" border="1">';
+        html += '<tr style="background-color:#e9ecef;">';
+        html += '<th style="padding:8px;">Team Name</th>';
+        html += '<th style="padding:8px;">Round 1</th>';
+        html += '<th style="padding:8px;">Round 2</th>';
+        html += '<th style="padding:8px;">Round 3</th>';
+        html += '<th style="padding:8px;">Total</th></tr>';
+
+        for (let i = 0; i < data.length; i++) {
+          let isLeader = data[i][4] === maxScore && maxScore > 0;
+          let rowBg   = isLeader ? 'background-color:#fff3cd;' : '';
+          let totalBg = isLeader ? 'background-color:#ffc107;' : 'background-color:#d4edda;';
+          let badge   = isLeader ? ' &#x1F451;' : '';
+
+          html += '<tr style="text-align:center;' + rowBg + '">';
+          html += '<td style="padding:10px; text-align:left;"><strong>' + data[i][0] + badge + '</strong></td>';
+          html += '<td style="padding:8px;">' + data[i][1] + '</td>';
+          html += '<td style="padding:8px;">' + data[i][2] + '</td>';
+          html += '<td style="padding:8px;">' + data[i][3] + '</td>';
+          html += '<td style="padding:8px;' + totalBg + '"><strong>' + data[i][4] + '</strong></td>';
+          html += '</tr>';
+        }
+        html += '</table>';
+        container.innerHTML = html;
+      }
+
+      function updateScoreboardButton() {
+        let btn = document.getElementById('next-round-btn');
+        // DEMO: always show the unlock button regardless of round
+        btn.innerText = "🔒 Unlock Rounds 2 & 3 — Get the Full Game!";
+        btn.style.backgroundColor = "#e65100";
+        btn.style.fontFamily      = "'Cinzel', serif";
+        btn.onclick = function () {
+          // Replace this URL with your actual TpT product link before publishing
+          window.open("https://www.teacherspayteachers.com/Store/Your-Store-Name", "_blank");
+        };
+      }
+
+      function prepareNextRound() {
+        currentRound++;
+        loadRound();
+      }
+
+      function showGameOver() {
+        document.getElementById('scoreboard-page').style.display = 'none';
+        document.getElementById('gameover-page').style.display = 'block';
+
+        buildScoreboard(currentGameData, 'final-scoreboard-container');
+
+        let maxScore = Math.max(...currentGameData.map(row => row[4]));
+        let winners  = currentGameData.filter(row => row[4] === maxScore).map(row => row[0]);
+        let winnerText = winners.length > 1
+          ? winners.join(' & ') + ' \u2014 it\'s a tie!'
+          : winners[0];
+
+        document.getElementById('winner-name').innerText = winnerText;
+      }
+
+      function restartGame() {
+        currentRound = 1;
+        currentGameData = [];
+        clearInterval(timerInterval);
+
+        ['gameover-page', 'round-page', 'scoreboard-page', 'team-page'].forEach(function(id) {
+          document.getElementById(id).style.display = 'none';
+        });
+        document.getElementById('instructions-page').style.display = 'block';
+
+        for (let i = 1; i <= 4; i++) {
+          document.getElementById('team' + i).value = '';
+        }
+      }
+
+      // Enter key navigation (skips round page to protect textarea line breaks)
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          if (document.getElementById('instructions-page').style.display !== 'none') {
+            document.querySelector('#instructions-page button').click();
+          } else if (document.getElementById('team-page').style.display !== 'none') {
+            document.querySelector('#team-page button').click();
+          } else if (document.getElementById('scoreboard-page').style.display !== 'none') {
+            document.getElementById('next-round-btn').click();
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

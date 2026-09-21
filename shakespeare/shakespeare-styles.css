@@ -1,0 +1,485 @@
+/* ================================================================
+   base.css — Author Competition Game: structural styles
+   Colours and fonts are controlled by CSS custom properties.
+   Override those variables in your author-specific stylesheet.
+   ================================================================ */
+
+/* ── Default variable values (Shakespeare parchment palette) ─────
+   Author stylesheets override these in their own :root block.    */
+:root {
+  /* Layout & background */
+  --body-bg          : #f4e8d1;
+  --body-bg-image    : url('https://www.transparenttextures.com/patterns/old-wall.png');
+  --body-text        : #333;
+  --body-margin      : 40px 20px;
+
+  /* Container */
+  --container-bg     : #fffdf8;
+  --container-border : #8d6e63;
+  --container-shadow : rgba(0,0,0,0.2);
+
+  /* Typography */
+  --heading-font     : serif;
+  --heading-color    : #3e2723;
+  --body-font        : Arial, sans-serif;
+
+  /* Buttons */
+  --btn-bg           : #8d6e63;
+  --btn-hover        : #5d4037;
+  --btn-text         : white;
+  --btn-font         : serif;
+
+  /* Navigation / badges */
+  --nav-bg           : #5d4037;
+  --nav-text         : #FFE791;
+
+  /* Inputs */
+  --input-border     : #ccc;
+  --input-bg         : #fcf8f2;
+  --input-text       : #333;
+
+  /* Fact grid */
+  --fact-list-bg     : #fffdf8;
+  --fact-input-bg    : #fcf8f2;
+  --fact-input-text  : #333;
+  --add-fact-bg      : #f5ede0;
+  --add-fact-text    : #8d6e63;
+  --add-fact-hover   : #ede0d0;
+
+  /* Timer */
+  --timer-color      : #d32f2f;
+  --timer-warn-color : #e65100;
+
+  /* Scoreboard */
+  --sb-header-bg     : #e9ecef;
+  --sb-leader-row-bg : #fff3cd;
+  --sb-leader-total  : #ffc107;
+  --sb-total-bg      : #d4edda;
+
+  /* Modal */
+  --modal-bg         : #fffdf8;
+  --modal-border     : #8d6e63;
+  --modal-text       : #333;
+
+  /* Restore banner */
+  --restore-bg       : #fff3cd;
+  --restore-border   : #f9a825;
+
+  /* Winner banner */
+  --winner-grad-a    : #8d6e63;
+  --winner-grad-b    : #5d4037;
+  --winner-text      : #FFE791;
+
+  /* Demo banner */
+  --demo-banner-bg   : #e65100;
+  --demo-banner-text : white;
+}
+
+/* ── Reset & base ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family  : var(--body-font);
+  text-align   : center;
+  background-color  : var(--body-bg);
+  background-image  : var(--body-bg-image);
+  color        : var(--body-text);
+  margin       : var(--body-margin);
+}
+
+h1, h2, h3, caption {
+  font-family : var(--heading-font);
+  color       : var(--heading-color);
+}
+
+/* ── Container ────────────────────────────────────────────────── */
+.container {
+  background-color : var(--container-bg);
+  padding          : 30px;
+  border-radius    : 10px;
+  border           : 2px solid var(--container-border);
+  box-shadow       : 0 0 15px var(--container-shadow);
+  max-width        : 700px;
+  margin           : auto;
+}
+
+/* Round page is wider to accommodate 4-column fact grid */
+#round-page { max-width: 920px; }
+
+/* ── Buttons ──────────────────────────────────────────────────── */
+button {
+  background-color : var(--btn-bg);
+  color            : var(--btn-text);
+  padding          : 15px 32px;
+  font-size        : 16px;
+  border           : none;
+  border-radius    : 5px;
+  cursor           : pointer;
+  margin-top       : 20px;
+  font-family      : var(--btn-font);
+}
+button:hover    { background-color: var(--btn-hover); }
+button:disabled { background-color: #888; cursor: default; }
+
+.btn-sm  { padding: 8px 18px !important; font-size: 13px !important; margin-top: 0 !important; }
+.btn-red { background-color: #c62828 !important; }
+.btn-red:hover { background-color: #8e0000 !important; }
+
+/* ── Restore banner ───────────────────────────────────────────── */
+#restore-banner {
+  display       : none;
+  max-width     : 700px;
+  margin        : 0 auto 14px;
+  background    : var(--restore-bg);
+  border        : 1px solid var(--restore-border);
+  border-radius : 8px;
+  padding       : 12px 20px;
+  text-align    : center;
+  font-size     : 14px;
+  color         : #333;
+}
+#restore-banner button {
+  padding    : 8px 18px !important;
+  font-size  : 13px !important;
+  margin     : 4px 6px 0 !important;
+}
+
+/* ── Top navigation bar ───────────────────────────────────────── */
+.top-nav {
+  max-width    : 920px;
+  margin       : 0 auto 14px;
+  text-align   : right;
+}
+.top-nav.left { text-align: left; }
+
+.top-nav a {
+  display         : inline-block;
+  background-color: var(--nav-bg);
+  color           : var(--nav-text);
+  font-family     : var(--heading-font);
+  font-size       : 13px;
+  padding         : 7px 16px;
+  border-radius   : 5px;
+  text-decoration : none;
+  letter-spacing  : 0.03em;
+}
+.top-nav a:hover { opacity: 0.85; }
+
+/* ── Review badge ─────────────────────────────────────────────── */
+.review-badge {
+  display        : inline-block;
+  background-color: var(--nav-bg);
+  color          : var(--nav-text);
+  font-family    : var(--heading-font);
+  font-size      : 12px;
+  padding        : 3px 10px;
+  border-radius  : 20px;
+  letter-spacing : 0.05em;
+  margin-bottom  : 8px;
+}
+
+/* ── Demo banner ──────────────────────────────────────────────── */
+.demo-banner-wrap {
+  max-width    : 920px;
+  margin       : 0 auto 14px;
+  text-align   : center;
+}
+.demo-banner {
+  display          : inline-block;
+  background-color : var(--demo-banner-bg);
+  color            : var(--demo-banner-text);
+  font-family      : var(--heading-font);
+  font-size        : 13px;
+  padding          : 7px 20px;
+  border-radius    : 5px;
+  letter-spacing   : 0.04em;
+}
+
+/* ── Team input page ──────────────────────────────────────────── */
+.team-input-row {
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  gap             : 10px;
+  margin          : 8px 0;
+}
+input.team-input {
+  width            : 60%;
+  padding          : 10px 12px;
+  border           : 1px solid var(--input-border);
+  border-left-width: 6px;
+  border-radius    : 4px;
+  font-size        : 16px;
+  background       : var(--input-bg);
+  color            : var(--input-text);
+}
+.team-add-remove {
+  display         : flex;
+  gap             : 10px;
+  justify-content : center;
+  margin-top      : 8px;
+}
+
+/* ── Facts grid ───────────────────────────────────────────────── */
+.facts-grid {
+  display               : grid;
+  grid-template-columns : repeat(4, 1fr);
+  gap                   : 10px;
+  margin-top            : 10px;
+  text-align            : left;
+}
+.fact-col {
+  border        : 1px solid var(--input-border);
+  border-radius : 6px;
+  overflow      : hidden;
+  background    : var(--fact-list-bg);
+  display       : flex;
+  flex-direction: column;
+}
+.fact-col-header {
+  padding      : 7px 8px;
+  font-family  : var(--heading-font);
+  font-size    : 12px;
+  font-weight  : 600;
+  text-align   : center;
+  border-bottom: 2px solid rgba(0,0,0,0.15);
+  line-height  : 1.3;
+  word-break   : break-word;
+  color        : #111;
+}
+.fact-list {
+  padding    : 6px;
+  flex       : 1;
+  min-height : 70px;
+  max-height : 210px;
+  overflow-y : auto;
+}
+.fact-row    { display: flex; align-items: center; gap: 3px; margin-bottom: 3px; }
+.fact-num    { font-size: 11px; color: #888; min-width: 16px; flex-shrink: 0; text-align: right; }
+
+input.fact-input {
+  flex             : 1;
+  min-width        : 0;
+  border           : 1px solid var(--input-border);
+  border-radius    : 3px;
+  padding          : 3px 5px;
+  font-size        : 12px;
+  background       : var(--fact-input-bg);
+  color            : var(--fact-input-text);
+  border-left-width: 1px;
+}
+input.fact-input:focus { outline: 1px solid var(--container-border); border-color: var(--container-border); }
+
+button.fact-del {
+  background  : none;
+  border      : none;
+  color       : #aaa;
+  cursor      : pointer;
+  padding     : 0 2px;
+  font-size   : 14px;
+  margin      : 0;
+  line-height : 1;
+  flex-shrink : 0;
+  font-family : Arial, sans-serif;
+}
+button.fact-del:hover { color: #d32f2f; background: none; }
+
+button.add-fact-btn {
+  width        : 100%;
+  padding      : 5px !important;
+  font-size    : 11px !important;
+  background   : var(--add-fact-bg) !important;
+  border       : none;
+  border-top   : 1px solid var(--input-border);
+  cursor       : pointer;
+  color        : var(--add-fact-text) !important;
+  font-family  : var(--heading-font);
+  margin       : 0 !important;
+  border-radius: 0 !important;
+}
+button.add-fact-btn:hover { background: var(--add-fact-hover) !important; }
+
+/* ── Score rows ───────────────────────────────────────────────── */
+.scores-section { text-align: left; margin: 14px 0 6px; }
+.scores-label   { font-size: 14px; margin: 0 0 8px; color: var(--body-text); }
+.score-row      { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+
+.team-score-badge {
+  display        : inline-block;
+  padding        : 4px 12px;
+  border-radius  : 12px;
+  font-weight    : bold;
+  font-size      : 13px;
+  min-width      : 110px;
+  max-width      : 200px;
+  text-align     : center;
+  white-space    : nowrap;
+  overflow       : hidden;
+  text-overflow  : ellipsis;
+  border         : 2px solid rgba(0,0,0,0.15);
+  color          : #111;
+}
+input.score-input {
+  width        : 52px;
+  padding      : 5px 6px;
+  border       : 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size    : 16px;
+  text-align   : center;
+  background   : var(--input-bg);
+  color        : var(--input-text);
+}
+.pts-label { font-size: 15px; color: var(--body-text); }
+
+button.penalty-btn {
+  background-color : #c62828 !important;
+  color            : white;
+  border           : none;
+  border-radius    : 4px;
+  padding          : 5px 12px !important;
+  font-size        : 13px !important;
+  cursor           : pointer;
+  margin           : 0 !important;
+  font-family      : var(--heading-font);
+}
+button.penalty-btn:hover { background-color: #8e0000 !important; }
+
+/* ── Scoreboard table ─────────────────────────────────────────── */
+.scoreboard-table {
+  width           : 100%;
+  border-collapse : collapse;
+  margin-top      : 15px;
+  font-size       : 16px;
+}
+.scoreboard-header-row { background-color: var(--sb-header-bg); }
+.sb-th     { padding: 8px; color: #333; }
+.sb-row    { text-align: center; }
+.sb-leader { background-color: var(--sb-leader-row-bg); }
+.sb-team-cell { padding: 8px 10px; text-align: left; }
+.sb-team-badge {
+  display       : inline-block;
+  border        : 1px solid;
+  border-radius : 8px;
+  padding       : 2px 8px;
+  font-size     : 13px;
+  color         : #111;
+}
+.sb-score { padding: 8px; }
+.sb-total { padding: 8px; background-color: var(--sb-total-bg); }
+.sb-total-leader { background-color: var(--sb-leader-total) !important; }
+
+/* ── Winner banner ────────────────────────────────────────────── */
+.winner-banner {
+  background    : linear-gradient(135deg, var(--winner-grad-a), var(--winner-grad-b));
+  color         : var(--winner-text);
+  padding       : 25px;
+  border-radius : 10px;
+  margin        : 20px 0;
+}
+.winner-banner h3 {
+  color       : var(--winner-text);
+  font-size   : 1.4em;
+  margin      : 0 0 8px;
+  font-family : var(--heading-font);
+}
+.winner-name {
+  font-size   : 1.9em;
+  font-family : var(--heading-font);
+  color       : var(--winner-text);
+  margin      : 8px 0 0;
+}
+.crown { font-size: 2.5em; }
+
+/* ── Stealing rules modal ─────────────────────────────────────── */
+.modal-overlay {
+  display         : none;
+  position        : fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background      : rgba(0,0,0,0.6);
+  z-index         : 1000;
+  justify-content : center;
+  align-items     : flex-start;
+  padding-top     : 40px;
+  box-sizing      : border-box;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background    : var(--modal-bg);
+  border        : 2px solid var(--modal-border);
+  border-radius : 10px;
+  padding       : 30px 35px;
+  max-width     : 620px;
+  width         : 90%;
+  max-height    : 80vh;
+  overflow-y    : auto;
+  text-align    : left;
+  box-shadow    : 0 8px 30px rgba(0,0,0,0.35);
+  position      : relative;
+  color         : var(--modal-text);
+}
+.modal-box h2 { margin-top: 0; font-size: 1.3em; color: var(--heading-color); }
+.modal-box h3 { color: var(--heading-color); }
+.modal-box p, .modal-box li { color: var(--modal-text); }
+
+button.modal-close {
+  position    : absolute;
+  top: 12px; right: 16px;
+  background  : none;
+  border      : none;
+  font-size   : 1.5em;
+  cursor      : pointer;
+  color       : var(--heading-color);
+  padding: 0; margin: 0;
+  font-family : Arial, sans-serif;
+  line-height : 1;
+}
+button.modal-close:hover { color: #d32f2f; background: none; }
+
+.example-block {
+  background    : rgba(0,0,0,0.04);
+  border-left   : 4px solid var(--container-border);
+  padding       : 10px 14px;
+  border-radius : 4px;
+  margin        : 10px 0;
+  font-size     : 0.95em;
+}
+.example-block.invalid { border-left-color: #d32f2f; background: rgba(211,47,47,0.06); }
+.example-label {
+  font-weight    : bold;
+  font-family    : var(--heading-font);
+  font-size      : 0.85em;
+  text-transform : uppercase;
+  letter-spacing : 0.05em;
+  margin-bottom  : 4px;
+}
+.valid-label   { color: #2e7d32; }
+.invalid-label { color: #d32f2f; }
+
+/* ── Floating stealing rules button ───────────────────────────── */
+#rules-float-btn {
+  position      : fixed;
+  bottom: 24px; right: 24px;
+  z-index       : 999;
+  background-color: var(--nav-bg);
+  color         : var(--nav-text);
+  border        : none;
+  border-radius : 50px;
+  padding       : 12px 20px;
+  font-size     : 14px;
+  font-family   : var(--heading-font);
+  cursor        : pointer;
+  box-shadow    : 0 4px 12px rgba(0,0,0,0.3);
+  margin        : 0;
+}
+#rules-float-btn:hover { opacity: 0.85; }
+
+/* ── Phase 1 note ─────────────────────────────────────────────── */
+#phase1-note {
+  font-style : italic;
+  color      : var(--heading-color);
+  margin     : 0 0 8px;
+  font-size  : 14px;
+  opacity    : 0.85;
+}

@@ -1,0 +1,131 @@
+/* ================================================================
+   poe.css — Edgar Allan Poe gothic dark theme
+   Overrides CSS variables defined in base.css.
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  /* Layout & background */
+  --body-bg          : #0d0b0e;
+  --body-bg-image    : url('https://www.transparenttextures.com/patterns/dark-leather.png');
+  --body-text        : #d4c5b0;
+  --body-margin      : 40px 20px;
+
+  /* Container */
+  --container-bg     : #1a1015;
+  --container-border : #6b0000;
+  --container-shadow : rgba(107,0,0,0.35);
+
+  /* Typography */
+  --heading-font     : 'IM Fell English', serif;
+  --heading-color    : #cc3333;
+  --body-font        : 'Crimson Text', Georgia, serif;
+
+  /* Buttons */
+  --btn-bg           : #6b0000;
+  --btn-hover        : #3d0000;
+  --btn-text         : #e8d5b7;
+  --btn-font         : 'IM Fell English', serif;
+
+  /* Navigation / badges */
+  --nav-bg           : #3d0000;
+  --nav-text         : #e8d5b7;
+
+  /* Inputs */
+  --input-border     : #4a2a2a;
+  --input-bg         : #150e10;
+  --input-text       : #d4c5b0;
+
+  /* Fact grid */
+  --fact-list-bg     : #150e10;
+  --fact-input-bg    : #1e1315;
+  --fact-input-text  : #d4c5b0;
+  --add-fact-bg      : #1e1010;
+  --add-fact-text    : #cc3333;
+  --add-fact-hover   : #2a1212;
+
+  /* Timer */
+  --timer-color      : #cc3333;
+  --timer-warn-color : #ff6600;
+
+  /* Scoreboard */
+  --sb-header-bg     : #2a1a1a;
+  --sb-leader-row-bg : #3d1a00;
+  --sb-leader-total  : #8b3a00;
+  --sb-total-bg      : #1a2a1a;
+
+  /* Modal */
+  --modal-bg         : #1a1015;
+  --modal-border     : #6b0000;
+  --modal-text       : #d4c5b0;
+
+  /* Restore banner */
+  --restore-bg       : #1a1505;
+  --restore-border   : #8b6914;
+
+  /* Winner */
+  --winner-grad-a    : #3d0000;
+  --winner-grad-b    : #1a0000;
+  --winner-text      : #e8d5b7;
+
+  /* Demo banner */
+  --demo-banner-bg   : #6b0000;
+  --demo-banner-text : #e8d5b7;
+}
+
+/* ── Poe-specific overrides ───────────────────────────────────── */
+
+/* Headings inherit the dark crimson; add slight text-shadow for mood */
+h1, h2, h3 {
+  text-shadow: 0 0 18px rgba(180,0,0,0.3);
+}
+
+/* Author portrait: dark oval border instead of warm brown */
+.author-portrait {
+  border-color : #6b0000 !important;
+  filter       : grayscale(20%) contrast(1.1);
+}
+
+/* Horizontal rules: deep red tint */
+hr { border-color: #4a1a1a; }
+
+/* Fact column headers: text should be light since they sit on coloured bg */
+.fact-col-header { color: #111; }
+
+/* Scoreboard table borders in dark red */
+.scoreboard-table td,
+.scoreboard-table th { border-color: #3d1a1a !important; }
+.sb-th { color: #d4c5b0; }
+.sb-score { color: #d4c5b0; }
+
+/* Team score badge text stays dark (badge bg is a colour) */
+.team-score-badge { color: #111 !important; }
+.sb-team-badge    { color: #111 !important; }
+
+/* Restore banner: dark amber on dark bg */
+#restore-banner { color: #d4c5b0; }
+
+/* Penalty button keeps bright red — stands out on dark bg */
+button.penalty-btn { background-color: #8b0000 !important; }
+button.penalty-btn:hover { background-color: #5c0000 !important; }
+
+/* btn-red (remove team) */
+.btn-red { background-color: #8b0000 !important; }
+.btn-red:hover { background-color: #5c0000 !important; }
+
+/* Floating rules button stays on top of dark page */
+#rules-float-btn { box-shadow: 0 4px 16px rgba(107,0,0,0.6); }
+
+/* Modal close button */
+button.modal-close { color: #cc3333; }
+
+/* Links inside instructions */
+a { color: #cc3333; }
+a:hover { color: #ff6666; }
+
+/* Phase 1 note italic text */
+#phase1-note { color: #cc3333; opacity: 1; }
+
+/* Score input on dark background */
+input.score-input { color: #d4c5b0; background: #1e1315; }

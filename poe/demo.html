@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edgar Allan Poe Competition — Free Demo</title>
+    <link rel="stylesheet" href="../base.css">
+    <link rel="stylesheet" href="./poe.css">
+  </head>
+  <body>
+
+    <!-- RESTORE BANNER -->
+    <div id="restore-banner">
+      <strong>&#x1F4BE; A previous demo session was found.</strong>
+      Would you like to resume where you left off?
+      <button onclick="restoreGame()" style="background-color:#2e7d32;">Resume</button>
+      <button onclick="dismissRestore()">Start Fresh</button>
+    </div>
+
+    <!-- DEMO BANNER -->
+    <div class="demo-banner-wrap">
+      <span class="demo-banner">&#x1F513; FREE DEMO &mdash; Round 1 Only</span>
+    </div>
+
+    <!-- INSTRUCTIONS PAGE -->
+    <div id="instructions-page" class="container">
+      <h1>Edgar Allan Poe Competition</h1>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Edgar_Allan_Poe_daguerreotype_crop.png"
+           alt="Edgar Allan Poe" class="author-portrait"
+           style="width:140px; border-radius:50%; border:3px solid #6b0000; margin-top:10px; filter:grayscale(20%) contrast(1.1);">
+      <p>An exploration of his life, times, and works through a game.</p>
+      <hr>
+      <h2>Game Rules</h2>
+      <p style="text-align:left;"><strong>Overview: </strong>In three rounds, you will gather facts about Edgar Allan Poe.</p>
+      <ul style="text-align:left;">
+        <li>Round 1: The Times of Poe</li>
+        <li>Round 2: The Life of Poe <em style="opacity:0.6;">(Full game only)</em></li>
+        <li>Round 3: The Works of Poe <em style="opacity:0.6;">(Full game only)</em></li>
+      </ul>
+      <p style="text-align:left;">Each round has two <strong>phases</strong>:</p>
+      <ul style="text-align:left;">
+        <li><strong>Phase 1:</strong> You have 5 minutes to use computers to gather facts for the round&rsquo;s topic.</li>
+        <li><strong>Phase 2:</strong> Take turns sharing one fact. Cross off facts given by other teams.
+          <ul>
+            <li>You earn <strong>1 point</strong> per unique fact given!</li>
+            <li>A valid <strong>fact</strong> must be <em>true and specific</em>.</li>
+            <li><strong>Stealing:</strong> A team may steal a point by providing a specific detail
+              the sharing team left out &mdash; but only if they had both the original fact
+              <em>and</em> the additional detail already written on their paper.
+              <a href="#" onclick="openModal(); return false;"
+                 style="font-weight:bold; white-space:nowrap;">
+                See detailed rules &amp; examples &#x1F4DC;
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <button onclick="goToTeamInput()">Start Demo &amp; Enter Teams</button>
+    </div>
+
+    <!-- TEAM INPUT PAGE -->
+    <div id="team-page" class="container" style="display:none;">
+      <h2>Enter Team Names</h2>
+      <p>Enter 4 to 8 team names. Each team&rsquo;s colour is shown by the border on its input.</p>
+      <div id="team-inputs"></div>
+      <div class="team-add-remove">
+        <button id="add-team-btn"    class="btn-sm" onclick="addTeamInput()">+ Add Team</button>
+        <button id="remove-team-btn" class="btn-sm btn-red" onclick="removeLastTeam()" style="display:none;">&#x2212; Remove Last Team</button>
+      </div>
+      <br>
+      <button onclick="submitTeams()">Save Teams &amp; Go To Round 1</button>
+    </div>
+
+    <!-- ROUND PAGE -->
+    <div id="round-page" class="container" style="display:none;">
+      <h2 id="round-title">Round X</h2>
+      <p id="round-subtitle"></p>
+      <hr>
+      <h3 id="phase1-heading">Phase 1: Fact Gathering</h3>
+      <p id="phase1-note"></p>
+      <h1 id="timer-display" style="font-size:48px;">05:00</h1>
+      <button id="timer-btn" onclick="startTimer(300)">Start 5-Minute Timer</button>
+      <hr>
+      <h3>Phase 2: Sharing Facts</h3>
+      <p style="margin-bottom:6px; font-size:15px;">
+        Press <strong>Enter</strong> in a fact box to add a numbered line &mdash; each line automatically adds 1 point to that team&rsquo;s score. Scores can still be edited manually below.
+      </p>
+      <div id="facts-grid" class="facts-grid"></div>
+      <br>
+      <div id="scores-section" class="scores-section"></div>
+      <button id="save-round-btn" onclick="saveRoundScores()">Save Round Scores</button>
+    </div>
+
+    <!-- SCOREBOARD PAGE — unlock button injected by game.js in demo mode -->
+    <div id="scoreboard-page" class="container" style="display:none;">
+      <h2>Scoreboard — Round 1 Complete</h2>
+      <div id="scoreboard-table-container"></div>
+      <button id="next-round-btn">&#x1F512; Unlock Rounds 2 &amp; 3</button>
+    </div>
+
+    <!-- GAME OVER PAGE (not reachable in demo, but required by engine) -->
+    <div id="gameover-page" class="container" style="display:none;">
+      <h2>Final Scoreboard</h2>
+      <div id="final-scoreboard-container"></div>
+      <div class="winner-banner">
+        <div class="crown">&#x1F451;</div>
+        <h3>Winner!</h3>
+        <div id="winner-name" class="winner-name"></div>
+      </div>
+      <button onclick="restartGame()">Play Again</button>
+    </div>
+
+    <!-- FLOATING RULES BUTTON -->
+    <button id="rules-float-btn" onclick="openModal()">&#x1F4DC; Stealing Rules</button>
+
+    <!-- STEALING RULES MODAL -->
+    <div id="steal-modal" class="modal-overlay" onclick="handleOverlayClick(event)">
+      <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()" title="Close">&times;</button>
+        <h2>&#x2696;&#xFE0F; Stealing Rules</h2>
+        <p><strong>When can a team steal?</strong><br>
+        A team may attempt to steal a point when the sharing team states a fact but omits
+        an important specific detail. To make a valid steal, the challenging team must meet
+        <em>both</em> of the following conditions:</p>
+        <ol>
+          <li>They must have the <strong>original fact</strong> written on their paper.</li>
+          <li>They must have the <strong>additional specific detail</strong> also written on
+              their paper &mdash; it cannot be something they thought of on the spot after hearing
+              the other team speak.</li>
+        </ol>
+        <p>If both conditions are met, the challenging team states their more complete version.
+        The <strong>teacher has final say</strong> on whether the added detail is specific and
+        significant enough to earn the steal. A steal that is awarded transfers the point
+        entirely &mdash; the original team does <em>not</em> keep it.</p>
+        <hr style="margin:16px 0;">
+        <h3 style="margin-bottom:8px;">Examples</h3>
+        <div class="example-block">
+          <div class="example-label valid-label">&#10003; Valid Steal</div>
+          <p style="margin:4px 0;">
+            <strong>Team A says:</strong> &#x201C;Poe was born in 1809.&#x201D;<br>
+            <strong>Team B challenges:</strong> &#x201C;We have written: Poe was born on January&nbsp;19, 1809, in Boston, Massachusetts.&#x201D;<br>
+            <strong>Result:</strong> Steal is valid &mdash; point goes to Team B.
+          </p>
+        </div>
+        <div class="example-block invalid">
+          <div class="example-label invalid-label">&#10007; Invalid Steal &mdash; Detail Not Written Down</div>
+          <p style="margin:4px 0;">
+            <strong>Team A says:</strong> &#x201C;Poe married his cousin Virginia Clemm.&#x201D;<br>
+            <strong>Team B challenges:</strong> &#x201C;She was only 13!&#x201D;<br>
+            <strong>Result:</strong> Not written down before Team A spoke. Steal denied.
+          </p>
+        </div>
+        <div class="example-block invalid">
+          <div class="example-label invalid-label">&#10007; Invalid Steal &mdash; New Fact, Not a Missing Detail</div>
+          <p style="margin:4px 0;">
+            <strong>Team A says:</strong> &#x201C;Poe wrote &#x2018;The Raven.&#x2019;&#x201D;<br>
+            <strong>Team B challenges:</strong> &#x201C;He also wrote &#x2018;Annabel Lee&#x2019;!&#x201D;<br>
+            <strong>Result:</strong> Separate new fact. Steal denied.
+          </p>
+        </div>
+        <p style="margin-top:14px; font-size:0.9em;">
+          <em>When in doubt, be generous to the defending team.</em>
+        </p>
+        <div style="text-align:center;">
+          <button onclick="closeModal()" style="margin-top:10px; padding:10px 28px; font-size:15px;">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME CONFIGURATION -->
+    <script>
+      window.GAME_CONFIG = {
+        saveKey       : 'poeGameDemo',
+        isReview      : false,
+        isDemo        : true,
+        // Replace with your actual TpT product URL before publishing
+        tptUrl        : 'https://www.teacherspayteachers.com/Store/Your-Store-Name',
+        rounds: {
+          1: { title: 'Round 1: The Times of Poe',
+               subtitle: '(1809\u20131849) American Romanticism, Gothic movement, the early Republic \u2014 what was his world like?' },
+          2: { title: 'Round 2: The Life of Poe',
+               subtitle: 'Orphaned young, raised by the Allans, West Point, Virginia Clemm, his mysterious death.' },
+          3: { title: 'Round 3: The Works of Poe',
+               subtitle: 'Poetry, tales of terror, detective fiction, literary criticism.' }
+        },
+        phase1Label   : 'Fact Gathering',
+        phase1Note    : 'Use your computers, phones, or classroom texts to find as many facts as you can.',
+        timerAlertText: 'Fact gathering time is over! Put devices away and begin Phase\u00a02.'
+      };
+    </script>
+    <script src="../game.js"></script>
+
+  </body>
+</html>
